@@ -26,12 +26,21 @@ class CPCIPCU(CElement):
     def precheck(self):
         if self.__pcu_info.get("bus") is None:
             raise ArgsNotCorrect("pcu's bus is mandatory!")
+
         if self.__pcu_info.get("spd_data_file") is None:
             raise ArgsNotCorrect("pcu's spd_data_file is mandatory!")
+
+        if self.__pcu_info.get("dimm_slot_topo") is None:
+            raise ArgsNotCorrect("pcu's dimm_slot_topo is mandatory!")
+
+        if self.__pcu_info.get("attach_cpu_index") is None:
+           raise ArgsNotCorrect("pcu's attach_cpu_index is mandatory!")
 
     def init(self):
         self.bus = self.__pcu_info["bus"]
         self.spd_data_file = self.__pcu_info["spd_data_file"]
+        self.dimm_slot_topo = self.__pcu_info["dimm_slot_topo"]
+        self.attach_cpu_index = self.__pcu_info["attach_cpu_index"]
 
     def handle_parms(self):
         args_cr0 = {}
@@ -52,6 +61,8 @@ class CPCIPCU(CElement):
         args_cr5["id"] = "pcu-cr5-{}".format(self.bus)
         args_cr5["addr"] = "1e.5"
         args_cr5["spd_data_file"] = self.spd_data_file
+        args_cr5["dimm_slot_topo"] = self.dimm_slot_topo
+        args_cr5["attach_cpu_index"] = self.attach_cpu_index
         cr5_list = []
         cr5_list.append("-device pcu_cr5")
 
